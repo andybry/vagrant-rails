@@ -1,0 +1,16 @@
+- name: Check whether the ruby version is present
+  stat: path=~/.rbenv/versions/{{ruby_version}}
+  register: ruby_version_stat
+
+- name: Install ruby version (if necessary)
+  shell: bash -lc "rbenv install {{ruby_version}}"
+  when: ruby_version_stat.stat.exists == False
+
+- name: Check the default version of ruby
+  shell: bash -lc "rbenv version-name"
+  register: ruby_version_command
+  changed_when: False
+
+- name: Set as the default ruby version (if necessary)
+  shell: bash -lc "rbenv global {{ruby_version}}"
+  when: ruby_version_command.stdout != '{{ruby_version}}'

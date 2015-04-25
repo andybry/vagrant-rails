@@ -1,0 +1,4 @@
+- name: Download ruby-build
+  git: 
+    repo=https://github.com/sstephenson/ruby-build
+    dest=~/.rbenv/plugins/ruby-build 

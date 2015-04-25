@@ -1,0 +1,17 @@
+- name: Download rbenv
+  git: 
+    repo=https://github.com/sstephenson/rbenv 
+    dest=~/.rbenv
+
+- name: Add rbenv to the path
+  lineinfile:
+    line='export PATH="$HOME/.rbenv/bin:$PATH"'
+    dest=~/.bash_profile
+    create=true
+    insertafter=EOF
+
+- name: Ensure that rbenv is initialised on log in
+  lineinfile:
+   line='eval "$(rbenv init -)"'
+   dest=~/.bash_profile
+   insertafter=EOF
