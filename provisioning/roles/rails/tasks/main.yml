@@ -1,0 +1,17 @@
+- name: Install SQLite library
+  apt: name=libsqlite3-dev
+  sudo: yes
+
+- name: Install JavaScript runtime
+  apt: name=nodejs
+  sudo: yes
+
+- name: Check whether Rails is already installed
+  shell: bash -lc "gem list | grep -Po '^rails(?!-)'"
+  register: is_rails_installed
+  changed_when: False
+  failed_when: is_rails_installed.rc == 2
+
+- name: Install Rails (if necessary)
+  shell: bash -lc "gem install rails"
+  when: is_rails_installed.stdout != 'rails'
